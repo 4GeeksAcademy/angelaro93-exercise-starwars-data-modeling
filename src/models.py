@@ -1,15 +1,11 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String,Date
+from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
 
-
-
 Base = declarative_base()
-
-
 
 class User(Base):
     __tablename__ = 'user'
@@ -24,19 +20,20 @@ class User(Base):
     phone = Column(String(50), nullable=False) 
     date = Column(Date(), unique=True, nullable=False)
 
-    likes = relationship("Like", back_populates="user")
+    favs = relationship("Fav", back_populates="user")
+    characters = relationship("Character", back_populates="user")
 
 
 class Planet(Base):
-     __tablename__ = 'planet'
+    __tablename__ = 'planet'
 
-     id = Column(Integer, primary_key=True)
-     name = Column(String(50), nullable=False, unique=True)  
-     description = Column(String(200), nullable=True)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False, unique=True)  
+    description = Column(String(200), nullable=True)
 
-     likes = relationship("Like", back_populates="planets")
+    favs = relationship("Fav", back_populates="planet")
+    characters = relationship("Character", back_populates="planet")
      
-
 
 class Character(Base):
     __tablename__ = 'character'
@@ -45,21 +42,24 @@ class Character(Base):
     name = Column(String(50), nullable=False, unique=True)  
     description = Column(String(200), nullable=True) 
 
-    likes = relationship("Like", back_populates="character")
+    favs = relationship("Fav", back_populates="character")
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship("User", back_populates="characters")
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+    planet = relationship("Planet", back_populates="characters")
 
-    
 
-class Like(Base):
-     __tablename__ = 'like'
+class Fav(Base):
+    __tablename__ = 'fav'
     
-     id_user = Column(Integer, ForeignKey('user.id'), primary_key=True)
-     id_character = Column(Integer, ForeignKey('character.id'), primary_key=True)
-     id_planet = Column(Integer, ForeignKey('planet.id'), primary_key=True)
+    id_user = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    id_character = Column(Integer, ForeignKey('character.id'), primary_key=True)
+    id_planet = Column(Integer, ForeignKey('planet.id'), primary_key=True)
 
-     user = relationship("User", back_populates="likes")
-     character = relationship("character", back_populates="likes")
-     planets = relationship("Planets", back_populates="likes")
-    
+    user = relationship("User", back_populates="favs")
+    character = relationship("Character", back_populates="favs")
+    planet = relationship("Planet", back_populates="favs")
+
 
     
 
