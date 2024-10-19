@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String,Date
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
@@ -22,6 +22,7 @@ class User(Base):
     password = Column(String(50), nullable=False)  
     address = Column(String(50), nullable=False) 
     phone = Column(String(50), nullable=False) 
+    date = Column(Date(), unique=True, nullable=False)
 
     likes = relationship("Like", back_populates="user")
 
@@ -89,5 +90,5 @@ class Like(Base):
 #     def to_dict(self):
 #         return {}
 
-# ## Draw from SQLAlchemy base
-# render_er(Base, 'diagram.png')
+## Draw from SQLAlchemy base
+render_er(Base, 'diagram.png')
