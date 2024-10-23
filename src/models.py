@@ -10,7 +10,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
     
-    id_user = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)
     username = Column(String(50), unique=True, nullable=False)
     firstname = Column(String(50), nullable=False)
     lastname = Column(String(50), nullable=False)
@@ -46,7 +46,7 @@ class Character(Base):
 class Fav(Base):
     __tablename__ = 'fav'
     
-    id = Column(Integer, primary_key=True)  # Primary key para la tabla de favoritos
+    id = Column(Integer, primary_key=False) 
     id_user = Column(Integer, ForeignKey('user.id'))
     id_character = Column(Integer, ForeignKey('character.id'))
     id_planet = Column(Integer, ForeignKey('planet.id'))
