@@ -21,7 +21,6 @@ class User(Base):
     date = Column(Date(), unique=True, nullable=False)
 
     favs = relationship("Fav", back_populates="user")
-    characters = relationship("Character", back_populates="user")
 
 
 class Planet(Base):
@@ -32,8 +31,7 @@ class Planet(Base):
     description = Column(String(200), nullable=True)
 
     favs = relationship("Fav", back_populates="planet")
-    characters = relationship("Character", back_populates="planet")
-     
+
 
 class Character(Base):
     __tablename__ = 'character'
@@ -43,25 +41,21 @@ class Character(Base):
     description = Column(String(200), nullable=True) 
 
     favs = relationship("Fav", back_populates="character")
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="characters")
-    planet_id = Column(Integer, ForeignKey('planet.id'))
-    planet = relationship("Planet", back_populates="characters")
 
 
 class Fav(Base):
     __tablename__ = 'fav'
     
-    id_user = Column(Integer, ForeignKey('user.id'), primary_key=True)
-    id_character = Column(Integer, ForeignKey('character.id'), primary_key=True)
-    id_planet = Column(Integer, ForeignKey('planet.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)  # Primary key para la tabla de favoritos
+    id_user = Column(Integer, ForeignKey('user.id'))
+    id_character = Column(Integer, ForeignKey('character.id'))
+    id_planet = Column(Integer, ForeignKey('planet.id'))
 
     user = relationship("User", back_populates="favs")
     character = relationship("Character", back_populates="favs")
     planet = relationship("Planet", back_populates="favs")
 
 
-    
 
 
 
